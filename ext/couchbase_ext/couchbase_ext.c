@@ -20,6 +20,10 @@
 #include <st.h>
 #endif
 
+#ifdef HAVE_RUBY_ENCODING_H
+#include "ruby/encoding.h"
+#endif
+
 #include <libcouchbase/couchbase.h>
 #include "couchbase_ext.h"
 
@@ -922,7 +926,13 @@ get_callback(libcouchbase_t handle, const void *cookie,
     VALUE k, v, f, c, *rv = ctx->rv, exc = Qnil, res;
 
     ctx->nqueries--;
+
+    #ifdef RUBY_ENCODING_H
+    k = rb_external_str_new((const char*)key, nkey);
+    #else
     k = rb_str_new((const char*)key, nkey);
+    #endif
+
     strip_key_prefix(bucket, k);
     if (error != LIBCOUCHBASE_KEY_ENOENT || !ctx->quiet) {
         exc = cb_check_error(error, "failed to get value", k);
