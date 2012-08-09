@@ -22,9 +22,9 @@
 
 #ifdef HAVE_RUBY_ENCODING_H
 #include "ruby/encoding.h"
-#define EXTERNAL_STR(key, nkey) rb_external_str_new((const char*)key, nkey)
+#define EXTERNAL_STR(k, l) rb_external_str_new((k), (l))
 #else
-#define EXTERNAL_STR(key, nkey) rb_str_new((const char*)key, nkey);
+#define EXTERNAL_STR(k, l) rb_str_new((k), (l));
 #endif
 
 #include <libcouchbase/couchbase.h>
